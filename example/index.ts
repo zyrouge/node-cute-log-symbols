@@ -1,11 +1,8 @@
 import picocolors from "picocolors";
-import {
-    CuteLogSymbols,
-    CuteLogSymbolsAscii,
-    CuteLogSymbolsUnicode,
-    createCuteLogSymbols,
-} from "../src";
+import { CuteLogSymbols, createCuteLogSymbols } from "../src";
 
+const unicodeLogSymbols = createCuteLogSymbols({ mode: "unicode" });
+const asciiLogSymbols = createCuteLogSymbols({ mode: "ascii" });
 const plainLogSymbols = createCuteLogSymbols();
 const coloredLogSymbols = createCuteLogSymbols({
     style: {
@@ -16,8 +13,8 @@ const coloredLogSymbols = createCuteLogSymbols({
     },
 });
 
-useCuteLogSymbols("Unicode Log Symbols", CuteLogSymbolsUnicode);
-useCuteLogSymbols("Ascii Log Symbols", CuteLogSymbolsAscii);
+useCuteLogSymbols("Unicode Log Symbols", unicodeLogSymbols);
+useCuteLogSymbols("Ascii Log Symbols", asciiLogSymbols);
 useCuteLogSymbols("Plain Log Symbols", plainLogSymbols);
 useCuteLogSymbols("Colored Log Symbols", coloredLogSymbols);
 
