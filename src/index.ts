@@ -7,14 +7,14 @@ export interface CuteLogSymbols {
     error: string;
 }
 
-export const CuteLogSymbolsUnicode = {
+export const CuteLogSymbolsUnicode: CuteLogSymbols = {
     info: "ℹ",
     success: "✔",
     warning: "⚠",
     error: "✖",
 };
 
-export const CuteLogSymbolsAscii = {
+export const CuteLogSymbolsAscii: CuteLogSymbols = {
     info: "i",
     success: "√",
     warning: "‼",
@@ -22,20 +22,16 @@ export const CuteLogSymbolsAscii = {
 };
 
 export interface CreateCuteLogSymbolsOptions {
+    mode?: "auto" | "ascii" | "unicode";
     style?: {
-        info?: (symbol: string) => string;
-        success?: (symbol: string) => string;
-        warning?: (symbol: string) => string;
-        error?: (symbol: string) => string;
+        [k in keyof CuteLogSymbols]?: (symbol: string) => string;
     };
 }
 
 export const createCuteLogSymbols = (
     options?: CreateCuteLogSymbolsOptions
 ): CuteLogSymbols => {
-    const from = isUnicodeSupported()
-        ? CuteLogSymbolsUnicode
-        : CuteLogSymbolsAscii;
+    const from = getCuteLogSymbolsFromMode(options?.mode);
     // @ts-expect-error
     const output: CuteLogSymbols = {};
     for (const key of Object.keys(from) as (keyof CuteLogSymbols)[]) {
@@ -43,6 +39,18 @@ export const createCuteLogSymbols = (
         output[key] = options?.style?.[key]?.(symbol) ?? symbol;
     }
     return output;
+};
+
+export const getCuteLogSymbolsFromMode = (
+    mode?: CreateCuteLogSymbolsOptions["mode"]
+) => {
+    if (mode === "ascii") {
+        return CuteLogSymbolsAscii;
+    }
+    if (mode === "unicode") {
+        return CuteLogSymbolsUnicode;
+    }
+    return isUnicodeSupported() ? CuteLogSymbolsUnicode : CuteLogSymbolsAscii;
 };
 
 export default createCuteLogSymbols;
